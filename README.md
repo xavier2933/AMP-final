@@ -24,4 +24,4 @@ bash run.sh planLTL
 ```
 
 ### Plotting hospital location
-Due to limited knowledge of matplotlib, I was unable to pass a paramter to my plotting script that enabled\disabled the plotting of the hospital. If you wish to see the hospital on the plot, uncomment lines 170, 178, and 186 of `visualize3d.py`. It is pretty obvious when the sub visits the hospital though, the coordinates are `(-9.0, 0.0, 0.0)`.
+Due to limited knowledge of matplotlib, I was unable to pass a parameter to my plotting script that enables\disables the plotting of the hospital. If you wish to see the hospital on the plot, uncomment lines 170, 178, and 186 of `visualize3d.py`. It is pretty obvious when the sub visits the hospital though, the coordinates are `(-9.0, 0.0, 0.0)`.
