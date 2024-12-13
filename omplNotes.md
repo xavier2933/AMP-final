@@ -1,1 +1,0 @@
-# OMPL Notes
