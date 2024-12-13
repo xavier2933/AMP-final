@@ -448,34 +448,37 @@ int main(int /*argc*/, char ** /*argv*/) {
 
     len = planLTLTask();
 
-     //////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
     /*
     Uncomment below for benchmarking
     */
 
-    for(int j = 0; j < 10; j++)
-    {
-        len = 0;
-        for(int i = 0; i < 100; i++)
-        {
-            localLen = planLTLTask();
-            len += localLen;
-            lens.push_back(localLen);
-        }
-        avg += len/100.0;
-    }
+    // for(int j = 0; j < 10; j++)
+    // {
+    //     len = 0;
+    //     for(int i = 0; i < 100; i++)
+    //     {
+    //         localLen = planLTLTask();
+    //         len += localLen;
+    //         lens.push_back(localLen);
+    //     }
+    //     avg += len/100.0;
+    // }
 
-    std::ofstream outFile("lens.csv");
-    if (outFile.is_open()) {
-        outFile << "Index,Value\n"; // Optional: Header row for CSV
-        for (size_t i = 0; i < lens.size(); i++) {
-            outFile << i << "," << lens[i] << "\n";
-        }
-        outFile.close();
-        std::cout << "Data written to lens.csv successfully." << std::endl;
-    } else {
-        std::cerr << "Failed to open file for writing." << std::endl;
-    }
+    // std::ofstream outFile("lens.csv");
+    // if (outFile.is_open()) {
+    //     outFile << "Index,Value\n"; // Optional: Header row for CSV
+    //     for (size_t i = 0; i < lens.size(); i++) {
+    //         outFile << i << "," << lens[i] << "\n";
+    //     }
+    //     outFile.close();
+    //     std::cout << "Data written to lens.csv successfully." << std::endl;
+    // } else {
+    //     std::cerr << "Failed to open file for writing." << std::endl;
+    // }
+
+    //////////////////////////////////////////////////////////////////////////
+
 
     return 0;
 }
