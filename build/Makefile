@@ -117,78 +117,78 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named 3dGeo
+# Target rules for targets named planConsecutive
 
 # Build rule for target.
-3dGeo: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 3dGeo
-.PHONY : 3dGeo
+planConsecutive: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 planConsecutive
+.PHONY : planConsecutive
 
 # fast build rule for target.
-3dGeo/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeo.dir/build.make CMakeFiles/3dGeo.dir/build
-.PHONY : 3dGeo/fast
+planConsecutive/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planConsecutive.dir/build.make CMakeFiles/planConsecutive.dir/build
+.PHONY : planConsecutive/fast
 
 #=============================================================================
-# Target rules for targets named 3dGeoSeq
+# Target rules for targets named planLTL
 
 # Build rule for target.
-3dGeoSeq: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 3dGeoSeq
-.PHONY : 3dGeoSeq
+planLTL: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 planLTL
+.PHONY : planLTL
 
 # fast build rule for target.
-3dGeoSeq/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeoSeq.dir/build.make CMakeFiles/3dGeoSeq.dir/build
-.PHONY : 3dGeoSeq/fast
+planLTL/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planLTL.dir/build.make CMakeFiles/planLTL.dir/build
+.PHONY : planLTL/fast
 
-src/3dGeo.o: src/3dGeo.cpp.o
-.PHONY : src/3dGeo.o
-
-# target to build an object file
-src/3dGeo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeo.dir/build.make CMakeFiles/3dGeo.dir/src/3dGeo.cpp.o
-.PHONY : src/3dGeo.cpp.o
-
-src/3dGeo.i: src/3dGeo.cpp.i
-.PHONY : src/3dGeo.i
-
-# target to preprocess a source file
-src/3dGeo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeo.dir/build.make CMakeFiles/3dGeo.dir/src/3dGeo.cpp.i
-.PHONY : src/3dGeo.cpp.i
-
-src/3dGeo.s: src/3dGeo.cpp.s
-.PHONY : src/3dGeo.s
-
-# target to generate assembly for a file
-src/3dGeo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeo.dir/build.make CMakeFiles/3dGeo.dir/src/3dGeo.cpp.s
-.PHONY : src/3dGeo.cpp.s
-
-src/3dGeoSeq.o: src/3dGeoSeq.cpp.o
-.PHONY : src/3dGeoSeq.o
+src/planConsecutive.o: src/planConsecutive.cpp.o
+.PHONY : src/planConsecutive.o
 
 # target to build an object file
-src/3dGeoSeq.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeoSeq.dir/build.make CMakeFiles/3dGeoSeq.dir/src/3dGeoSeq.cpp.o
-.PHONY : src/3dGeoSeq.cpp.o
+src/planConsecutive.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planConsecutive.dir/build.make CMakeFiles/planConsecutive.dir/src/planConsecutive.cpp.o
+.PHONY : src/planConsecutive.cpp.o
 
-src/3dGeoSeq.i: src/3dGeoSeq.cpp.i
-.PHONY : src/3dGeoSeq.i
+src/planConsecutive.i: src/planConsecutive.cpp.i
+.PHONY : src/planConsecutive.i
 
 # target to preprocess a source file
-src/3dGeoSeq.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeoSeq.dir/build.make CMakeFiles/3dGeoSeq.dir/src/3dGeoSeq.cpp.i
-.PHONY : src/3dGeoSeq.cpp.i
+src/planConsecutive.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planConsecutive.dir/build.make CMakeFiles/planConsecutive.dir/src/planConsecutive.cpp.i
+.PHONY : src/planConsecutive.cpp.i
 
-src/3dGeoSeq.s: src/3dGeoSeq.cpp.s
-.PHONY : src/3dGeoSeq.s
+src/planConsecutive.s: src/planConsecutive.cpp.s
+.PHONY : src/planConsecutive.s
 
 # target to generate assembly for a file
-src/3dGeoSeq.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeoSeq.dir/build.make CMakeFiles/3dGeoSeq.dir/src/3dGeoSeq.cpp.s
-.PHONY : src/3dGeoSeq.cpp.s
+src/planConsecutive.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planConsecutive.dir/build.make CMakeFiles/planConsecutive.dir/src/planConsecutive.cpp.s
+.PHONY : src/planConsecutive.cpp.s
+
+src/planLTL.o: src/planLTL.cpp.o
+.PHONY : src/planLTL.o
+
+# target to build an object file
+src/planLTL.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planLTL.dir/build.make CMakeFiles/planLTL.dir/src/planLTL.cpp.o
+.PHONY : src/planLTL.cpp.o
+
+src/planLTL.i: src/planLTL.cpp.i
+.PHONY : src/planLTL.i
+
+# target to preprocess a source file
+src/planLTL.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planLTL.dir/build.make CMakeFiles/planLTL.dir/src/planLTL.cpp.i
+.PHONY : src/planLTL.cpp.i
+
+src/planLTL.s: src/planLTL.cpp.s
+.PHONY : src/planLTL.s
+
+# target to generate assembly for a file
+src/planLTL.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/planLTL.dir/build.make CMakeFiles/planLTL.dir/src/planLTL.cpp.s
+.PHONY : src/planLTL.cpp.s
 
 # Help Target
 help:
@@ -198,14 +198,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... 3dGeo"
-	@echo "... 3dGeoSeq"
-	@echo "... src/3dGeo.o"
-	@echo "... src/3dGeo.i"
-	@echo "... src/3dGeo.s"
-	@echo "... src/3dGeoSeq.o"
-	@echo "... src/3dGeoSeq.i"
-	@echo "... src/3dGeoSeq.s"
+	@echo "... planConsecutive"
+	@echo "... planLTL"
+	@echo "... src/planConsecutive.o"
+	@echo "... src/planConsecutive.i"
+	@echo "... src/planConsecutive.s"
+	@echo "... src/planLTL.o"
+	@echo "... src/planLTL.i"
+	@echo "... src/planLTL.s"
 .PHONY : help
 
 
