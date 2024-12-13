@@ -1,4 +1,4 @@
-# Install script for directory: /home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl
+# Install script for directory: /home/xavier/finalProject
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/xavier/finalProject/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

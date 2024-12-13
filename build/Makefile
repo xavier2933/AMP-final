@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl
+CMAKE_SOURCE_DIR = /home/xavier/finalProject
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl/build
+CMAKE_BINARY_DIR = /home/xavier/finalProject/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl/build/CMakeFiles /home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xavier/finalProject/build/CMakeFiles /home/xavier/finalProject/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/xavier/finalProject/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -142,32 +142,6 @@ depend:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeoSeq.dir/build.make CMakeFiles/3dGeoSeq.dir/build
 .PHONY : 3dGeoSeq/fast
 
-#=============================================================================
-# Target rules for targets named control
-
-# Build rule for target.
-control: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 control
-.PHONY : control
-
-# fast build rule for target.
-control/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/control.dir/build.make CMakeFiles/control.dir/build
-.PHONY : control/fast
-
-#=============================================================================
-# Target rules for targets named geometric
-
-# Build rule for target.
-geometric: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 geometric
-.PHONY : geometric
-
-# fast build rule for target.
-geometric/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometric.dir/build.make CMakeFiles/geometric.dir/build
-.PHONY : geometric/fast
-
 src/3dGeo.o: src/3dGeo.cpp.o
 .PHONY : src/3dGeo.o
 
@@ -216,54 +190,6 @@ src/3dGeoSeq.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/3dGeoSeq.dir/build.make CMakeFiles/3dGeoSeq.dir/src/3dGeoSeq.cpp.s
 .PHONY : src/3dGeoSeq.cpp.s
 
-src/control.o: src/control.cpp.o
-.PHONY : src/control.o
-
-# target to build an object file
-src/control.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/control.dir/build.make CMakeFiles/control.dir/src/control.cpp.o
-.PHONY : src/control.cpp.o
-
-src/control.i: src/control.cpp.i
-.PHONY : src/control.i
-
-# target to preprocess a source file
-src/control.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/control.dir/build.make CMakeFiles/control.dir/src/control.cpp.i
-.PHONY : src/control.cpp.i
-
-src/control.s: src/control.cpp.s
-.PHONY : src/control.s
-
-# target to generate assembly for a file
-src/control.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/control.dir/build.make CMakeFiles/control.dir/src/control.cpp.s
-.PHONY : src/control.cpp.s
-
-src/geometric.o: src/geometric.cpp.o
-.PHONY : src/geometric.o
-
-# target to build an object file
-src/geometric.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometric.dir/build.make CMakeFiles/geometric.dir/src/geometric.cpp.o
-.PHONY : src/geometric.cpp.o
-
-src/geometric.i: src/geometric.cpp.i
-.PHONY : src/geometric.i
-
-# target to preprocess a source file
-src/geometric.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometric.dir/build.make CMakeFiles/geometric.dir/src/geometric.cpp.i
-.PHONY : src/geometric.cpp.i
-
-src/geometric.s: src/geometric.cpp.s
-.PHONY : src/geometric.s
-
-# target to generate assembly for a file
-src/geometric.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/geometric.dir/build.make CMakeFiles/geometric.dir/src/geometric.cpp.s
-.PHONY : src/geometric.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -274,20 +200,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... 3dGeo"
 	@echo "... 3dGeoSeq"
-	@echo "... control"
-	@echo "... geometric"
 	@echo "... src/3dGeo.o"
 	@echo "... src/3dGeo.i"
 	@echo "... src/3dGeo.s"
 	@echo "... src/3dGeoSeq.o"
 	@echo "... src/3dGeoSeq.i"
 	@echo "... src/3dGeoSeq.s"
-	@echo "... src/control.o"
-	@echo "... src/control.i"
-	@echo "... src/control.s"
-	@echo "... src/geometric.o"
-	@echo "... src/geometric.i"
-	@echo "... src/geometric.s"
 .PHONY : help
 
 

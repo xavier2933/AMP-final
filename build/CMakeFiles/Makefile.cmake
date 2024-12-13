@@ -54,6 +54,4 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/3dGeo.dir/DependInfo.cmake"
   "CMakeFiles/3dGeoSeq.dir/DependInfo.cmake"
-  "CMakeFiles/control.dir/DependInfo.cmake"
-  "CMakeFiles/geometric.dir/DependInfo.cmake"
   )

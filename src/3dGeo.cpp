@@ -1,57 +1,23 @@
- /*********************************************************************
- * Software License Agreement (BSD License)
- *
- *  Copyright (c) 2010, Rice University
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above
- *     copyright notice, this list of conditions and the following
- *     disclaimer in the documentation and/or other materials provided
- *     with the distribution.
- *   * Neither the name of the Rice University nor the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************/
-  
- /* Author: Ioan Sucan */
-  
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <iomanip> // For formatting numbers
-#include <cmath>   // For sqrt and pow
-#include <ctime>
+ /* Author: Xavier O'Keefe */
 
-#include <ompl/config.h>
 #include <ompl/base/SpaceInformation.h>
 #include <ompl/base/spaces/SE3StateSpace.h>
+#include <ompl/config.h>
 #include <ompl/geometric/SimpleSetup.h>
 #include <ompl/geometric/planners/rrt/RRTConnect.h>
 
-// #include "PostProcessing.h"
+#include <cmath>
+#include <ctime> 
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <vector>
+
 
 namespace ob = ompl::base;
 namespace og = ompl::geometric;
 
+// Automaton states. Add if needed.
 enum class AutomatonState {
     State0,
     State1,
@@ -67,6 +33,7 @@ enum class AutomatonState {
     State11
 };
 
+// Locations. Add if needed.
 enum class Locations {
     init,
     s1,
@@ -98,15 +65,14 @@ struct TaskStates {
 };
 
 std::vector<SphereObstacle> obstacles = {
-    {0.0, 0.0, 0.0, 0.25}, // Example obstacle at origin with radius 0.2
-    {0.5, 0.5, 0.5, 0.15},  // Another obstacle
-    {1.0, 1.0, 0.0, 5.2},  // Another obstacle
-    {5.0, 5.0, 6.0, 3.2},  // Another obstacle
-    {-5.0, -6.0, -4.0, 3.2}  // Another obstacle
-
-
+    {0.0, 0.0, 0.0, 0.25}, // x, y, z, radius
+    {0.5, 0.5, 0.5, 0.15},
+    {1.0, 1.0, 0.0, 5.2},
+    {5.0, 5.0, 6.0, 3.2},
+    {-5.0, -6.0, -4.0, 3.2}
 };
 
+// GPT collision checker for sphere
 bool isStateValid(const ob::State *state)
 {
     const auto *se3state = state->as<ob::SE3StateSpace::StateType>();
@@ -116,7 +82,6 @@ bool isStateValid(const ob::State *state)
     double y = pos->values[1];
     double z = pos->values[2];
 
-    // Check collision with each obstacle
     for (const auto &obstacle : obstacles) {
         double dist = std::sqrt(std::pow(x - obstacle.x, 2) +
                                 std::pow(y - obstacle.y, 2) +
@@ -130,7 +95,17 @@ bool isStateValid(const ob::State *state)
     return true; // State is valid
 }
 
-// F(s1) & F(s2)&F(s3) & (!s2 U healthy) 
+// F(s1) & F(s2)& F(s3) & (!s2 U healthy) 
+/*
+It is quite easy to generate this function using AI.
+Go to https://spot.lre.epita.fr/app/ , and enter in your desired LTL formula. Then, get the 
+HOA, paste this function and the HOA into ChatGPT, and paste the result back. Ensure that you 
+select "force state-based acc." and Acceptance: (state-based) Buchi" The formula followed in
+this function is:
+
+F(s1) & F(s2)& F(s3) & (!s2 U healthy) 
+
+*/
 AutomatonState getNextState(AutomatonState currentState, bool s1, bool s2, bool s3, bool healthy) {
     switch (currentState) {
         case AutomatonState::State0:
@@ -237,14 +212,14 @@ Eigen::VectorXd stateToGoal(Locations locations)
             res << 0.0, -9.0, 0.0;
             break;
         default:
-            res.setZero(); // Default to a zero vector for safety
+            res.setZero();
             break;
     }
     return res;
 }
 
 
-double planWithSimpleSetup(const std::string &output_file, Eigen::VectorXd startVec, Eigen::VectorXd goalVec)
+double planWithSimpleSetupLTL(const std::string &output_file, Eigen::VectorXd startVec, Eigen::VectorXd goalVec)
 {
 
     std::ofstream out_file(output_file, std::ios::app);
@@ -268,6 +243,7 @@ double planWithSimpleSetup(const std::string &output_file, Eigen::VectorXd start
     ob::ScopedState<> start(space);
     ob::ScopedState<> goal(space);
 
+    // Add unit quaternion
     for(int i = 0; i < 7; i++)
     {
         if(i == 3) 
@@ -303,14 +279,11 @@ double planWithSimpleSetup(const std::string &output_file, Eigen::VectorXd start
             const ob::SE3StateSpace::StateType *se3state = state->as<ob::SE3StateSpace::StateType>();
             const ob::RealVectorStateSpace::StateType *pos = se3state->as<ob::RealVectorStateSpace::StateType>(0);
 
-            // Extract position
             double x = pos->values[0];
             double y = pos->values[1];
             double z = pos->values[2];
 
-            // Write position
             out_file << std::fixed << std::setprecision(5) << x << " " << y << " " << z << std::endl;
-
         }
     }
     else
@@ -322,7 +295,7 @@ double planWithSimpleSetup(const std::string &output_file, Eigen::VectorXd start
     return len;
 }
 
-double doEverything()
+double planLTLTask()
 {
     double len = 0.0;
     std::string output_file = "SampleOut.txt";
@@ -345,20 +318,20 @@ double doEverything()
 
     if(now % 4 == 0)
     {
-        planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s2));
+        planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s2));
         curr = stateToGoal(Locations::s2);
         if(it%3 != 1) states.s2 = 1;
         std::cout << "VISITED S2" << std::endl;
         nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
     } else if(now%4 == 1) {
-        planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s2));
+        planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s2));
         curr = stateToGoal(Locations::s3);
         if(it%3 != 1) states.s3 = 1;
         std::cout << "VISITED S3" << std::endl;
         nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
 
     } else if(now%4 == 2) {
-        planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s1));
+        planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s1));
         curr = stateToGoal(Locations::s1);
         if(it%3!= 1) states.s1 = 1;
         std::cout << "VISITED S1" << std::endl;
@@ -390,13 +363,10 @@ double doEverything()
             std::cout << "SHARK ATTACK" << std::endl;
         }
 
-        // nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
-        // std::cout << "Current state: " << stateToString(currentState)
-        //           << " -> Next state: " << stateToString(nextState) << std::endl;
         currentState = nextState;
 
         if (!states.healthy) {
-            len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::healthy));
+            len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::healthy));
             curr = stateToGoal(Locations::healthy);
             states.healthy = 1;
             nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
@@ -408,21 +378,21 @@ double doEverything()
         {
             if(now%3 == 0)
             {
-                len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s2));
+                len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s2));
                 curr = stateToGoal(Locations::s2);
                 if(it%3 != 1) states.s2 = 1;
                 nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
                 std::cout << "VISITED S2 with state: " << std::endl;
                 std::cout << "Current state: " << stateToString(nextState) << std::endl;
             } else if(now%3 == 1) {
-                len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s2));
+                len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s2));
                 curr = stateToGoal(Locations::s3);
                 if(it%3 != 1) states.s3 = 1;
                 nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
                 std::cout << "VISITED S3" << std::endl;
                 std::cout << "Current state: " << stateToString(nextState) << std::endl;
             } else {
-                len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s1));
+                len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s1));
                 curr = stateToGoal(Locations::s1);
                 if(it%3!= 1) states.s1 = 1;
                 std::cout << "VISITED S1" << std::endl;
@@ -433,7 +403,7 @@ double doEverything()
         }
 
         if (!states.s2) {
-            len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s2));
+            len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s2));
             curr = stateToGoal(Locations::s2);
             states.s2 = 1;
             nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
@@ -443,7 +413,7 @@ double doEverything()
         }
 
         if (!states.s1) {
-            len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s1));
+            len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s1));
             curr = stateToGoal(Locations::s1);
             states.s1 = 1;
             nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
@@ -453,7 +423,7 @@ double doEverything()
         }
 
         if (!states.s3) {
-            len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::s1));
+            len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::s1));
             curr = stateToGoal(Locations::s3);
             states.s3 = 1;
             nextState = getNextState(currentState, states.s1, states.s2, states.s3, states.healthy);
@@ -466,7 +436,7 @@ double doEverything()
 
         currentState = nextState;
     }
-    len += planWithSimpleSetup(output_file, curr, stateToGoal(Locations::goal));
+    len += planWithSimpleSetupLTL(output_file, curr, stateToGoal(Locations::goal));
     return len;
 }
   
@@ -475,55 +445,37 @@ int main(int /*argc*/, char ** /*argv*/) {
     double len = 0.0;
     double localLen = 0.0;
     double avg = 0.0;
-    len = doEverything();
-    for(int j = 0; j < 10; j++)
-    {
-        len = 0;
-        for(int i = 0; i < 100; i++)
-        {
-            localLen = doEverything();
-            len += localLen;
-            lens.push_back(localLen);
-        }
-        avg += len/100.0;
-    }
 
-    std::ofstream outFile("lens.csv");
-    if (outFile.is_open()) {
-        outFile << "Index,Value\n"; // Optional: Header row for CSV
-        for (size_t i = 0; i < lens.size(); i++) {
-            outFile << i << "," << lens[i] << "\n";
-        }
-        outFile.close();
-        std::cout << "Data written to lens.csv successfully." << std::endl;
-    } else {
-        std::cerr << "Failed to open file for writing." << std::endl;
-    }
-    std::cout << "len " << avg/10.0 << std::endl;
+    len = planLTLTask();
+
+     //////////////////////////////////////////////////////////////////////////
+    /*
+    Uncomment below for benchmarking
+    */
+
+    // for(int j = 0; j < 10; j++)
+    // {
+    //     len = 0;
+    //     for(int i = 0; i < 100; i++)
+    //     {
+    //         localLen = planLTLTask();
+    //         len += localLen;
+    //         lens.push_back(localLen);
+    //     }
+    //     avg += len/100.0;
+    // }
+
+    // std::ofstream outFile("lens.csv");
+    // if (outFile.is_open()) {
+    //     outFile << "Index,Value\n"; // Optional: Header row for CSV
+    //     for (size_t i = 0; i < lens.size(); i++) {
+    //         outFile << i << "," << lens[i] << "\n";
+    //     }
+    //     outFile.close();
+    //     std::cout << "Data written to lens.csv successfully." << std::endl;
+    // } else {
+    //     std::cerr << "Failed to open file for writing." << std::endl;
+    // }
+
     return 0;
 }
-
-// int main() {
-//     AutomatonState currentState = AutomatonState::State3;
-//     bool s1 = false, s2 = false, healthy = true; // Initial conditions
-
-//     while (currentState != AutomatonState::State0) { // Loop until acceptance
-//         std::cout << "Current state: " << stateToString(currentState) << std::endl;
-
-//         // Simulate environment conditions
-//         s1 = (std::rand() % 2) == 0;
-//         s2 = (std::rand() % 2) == 0;
-//         healthy = (std::rand() % 2) == 0;
-
-//         // Update state
-//         AutomatonState nextState = getNextState(currentState, s1, s2, healthy);
-//         std::cout << "Conditions: s1=" << s1 << ", s2=" << s2 << ", healthy=" << healthy << std::endl;
-//         std::cout << "Next state: " << stateToString(nextState) << std::endl;
-
-//         currentState = nextState;
-//     }
-
-//     std::cout << "Reached accepting state: " << stateToString(currentState) << std::endl;
-
-//     return 0;
-// }

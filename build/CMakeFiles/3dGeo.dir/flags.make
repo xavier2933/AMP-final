@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DBOOST_ALLOW_DEPRECATED_HEADERS -DBOOST_BIND_GLOBAL_PLACEHOLDERS
 
-CXX_INCLUDES = -I/home/xavier/motion_planning/testForMidterm/AMP-Tools-public/ompl/includes -I/usr/include/ompl-1.5 -I/usr/include/eigen3
+CXX_INCLUDES = -I/home/xavier/finalProject/includes -I/usr/include/ompl-1.5 -I/usr/include/eigen3
 
 CXX_FLAGS = 
 
