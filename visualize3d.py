@@ -18,7 +18,7 @@ obstacles = [
     SphereObstacle(0.5, 0.5, 0.5, 0.1),   # Another obstacle
     SphereObstacle(1.0, 1.0, 0.0, 5.0),  # Example obstacle at origin with radius 0.2
     SphereObstacle(5.0, 5.0, 6.0, 3.0),  # Example obstacle at origin with radius 0.2
-    SphereObstacle(-5.0, -6.0, -4.0, 3.0),  # Example obstacle at origin with radius 0.2
+    SphereObstacle(-5.0, -6.0, -4.0, 3.0),  # Example obstacle at origin with radius 0.2s
 
 ]
 
