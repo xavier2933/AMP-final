@@ -1,4 +1,0 @@
-/home/xavier/finalProject/build/CMakeFiles/planConsecutive.dir
-/home/xavier/finalProject/build/CMakeFiles/planLTL.dir
-/home/xavier/finalProject/build/CMakeFiles/edit_cache.dir
-/home/xavier/finalProject/build/CMakeFiles/rebuild_cache.dir
